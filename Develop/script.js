@@ -20,4 +20,24 @@ $(function () {
   // attribute of each time-block be used to do this?
   //
   // TODO: Add code to display the current date in the header of the page.
+  $(".time-block").each(function() {
+    // Get the time block's ID
+    var timeBlockId = $(this).attr("id");
+
+    // Retrieve the user input from localStorage using the time block's ID as the key
+    var savedInput = localStorage.getItem(timeBlockId);
+
+    // Set the value of the corresponding textarea element
+    $(this).find(".description").val(savedInput);
+  });
+
+  // TODO: Add code to display the current date in the header of the page.
+  var currentDateEl = $("#currentDay");
+
+  function updateDateTime() {
+  var myDate = dayjs();
+  currentDateEl.text( myDate.format('dddd , MMMM DD HH:mm:ss'));
+}
+updateDateTime();
+setInterval(updateDateTime, 1000)
 });
