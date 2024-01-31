@@ -21,23 +21,30 @@ $(function () {
     }
   });
 
+  function updateBlocks() {
+    var currentHour = dayjs().hour();
 
-  var currentHour = dayjs().hour();
+    // Loop through each time block
+    $(".time-block").each(function() {
+      var blockHour = parseInt($(this).attr("id"));
 
-  // Loop through each time block
-  $(".time-block").each(function() {
-    // Get the hour from the time block's id
-    var blockHour = parseInt($(this).attr("id").split("-")[1]);
+      if (blockHour < currentHour) {
+        $(this).removeClass("present future").addClass("past");
+      } else if (blockHour === currentHour) {
+        $(this).removeClass("past future").addClass("present");
+      } else {
+        $(this).removeClass("past present").addClass("future");
+      }
+    });
+  }
 
-    // Apply the appropriate class based on the comparison
-    if (blockHour < currentHour) {
-      $(this).addClass("past");
-    } else if (blockHour === currentHour) {
-      $(this).addClass("present");
-    } else {
-      $(this).addClass("future");
-    }
-  });
+  // Update blocks on page load
+  updateBlocks();
+
+  // Update blocks every minute to handle the transition from past to future at midnight
+  setInterval(function() {
+    updateBlocks();
+  }, 60000); // 60,000 milliseconds = 1 minute
 
 
   $(".time-block").each(function() {
